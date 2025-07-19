@@ -111,7 +111,21 @@ def index():
 @app.route('/<code>')
 def redirect_short(code):
     url = short_links.get(code)
-    return redirect(url) if url else 'Liên kết không tồn tại', 404
+    if not url:
+        return 'Liên kết không tồn tại', 404
+    return f'''
+    <html>
+    <head>
+      <title>Redirecting...</title>
+      <script>
+        window.location.href = "{url}";
+      </script>
+    </head>
+    <body>
+      <p>Đang chuyển tới <a href="{url}">{url}</a>...</p>
+    </body>
+    </html>
+    '''
 
 if __name__ == '__main__':
     app.run(debug=True)
